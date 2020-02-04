@@ -31,13 +31,18 @@ void setup() {
   Serial.begin(115200);
   i2cWrite(0x00,0b0110);  //enable light sensor and activate rgb mode
   i2cWrite(0x04,0b01000000); //set to 16 bit resolution for 25ms response time and set measurement rate to 25ms
+
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
 }
 
 void loop() {
   
- //Serial.println(GetNewColor());
- for (int i = 1; i <= (NUM_REV * 8); i++) GetNewColor();
- Serial.println("Revolutions completed");
+ Serial.println(GetNewColor());
+ //for (int i = 1; i <= (NUM_REV * 8); i++) GetNewColor();
+ //Serial.println("Revolutions completed");
  
 }
 
@@ -134,6 +139,13 @@ int GetNewColor() {
 
   while(CurrentColor == LastColor) CurrentColor = GetColor();
   LastColor = CurrentColor;
+  
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(CurrentColor + 2, HIGH);
+  
   return CurrentColor;
   
 }
